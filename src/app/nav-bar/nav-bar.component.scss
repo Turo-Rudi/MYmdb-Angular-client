@@ -1,0 +1,24 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.mat-button {
+  height: 40px !important;
+  width: 140px !important;
+  font-size: 35px !important;
+  background-color: rgba(255, 255, 255, 0.767);
+  margin-left: 8px;
+}
+
+.mat-stroked-button {
+  margin: 20px;
+  background-color: rgba(255, 255, 255, 0.767);
+}
+
+.mat-raised-button {
+  width: 150px;
+}
+
+.mat-toolbar {
+  background-color: rgba(44, 42, 42, 0.616);
+}
