@@ -1,0 +1,52 @@
+.user-profile {
+  background-color: rgb(228, 220, 236);
+  text-align: center;
+  border: 0.5px solid black;
+  padding: 70px;
+  margin: auto;
+}
+
+.user-category {
+  font-size: 25px;
+  font-weight: 500;
+  padding: 5px;
+}
+
+.notbold{
+  font-weight:normal
+}
+
+.myFavMovies {
+  margin: 2em auto;
+  text-align: center;
+}
+
+.myProfile {
+  font-size: 40px;
+  padding: 10px;
+}
+
+mat-card {
+  max-width: 400px;
+  margin: 2em auto;
+  text-align: center;
+  background-color: rgb(228, 220, 236);
+}
+
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+mat-card-header {
+  max-width: 400px;
+  margin: 2em auto;
+  text-align: center;
+  justify-content: center;
+}
+
+mat-card-title {
+  padding: 30px;
+}
