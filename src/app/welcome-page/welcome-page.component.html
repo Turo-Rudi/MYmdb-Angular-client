@@ -1,12 +1,12 @@
 <div class="main-page">
-  <h1>
+  <img src="../../assets/mymdb.svg" alt="mymdb logo" /><br>
+  <h1 class="title">
     Welcome to MYmdb!
   </h1>
-  <button mat-raised-button (click)="openUserRegistrationDialog()" style="margin-right: 10px;" color="primary">
+  <button mat-raised-button (click)="openUserRegistrationDialog()" class="registerBtn" color="primary">
     Sign up
-  </button>
-  <button mat-raised-button class="button-confirmation" (click)="openUserLoginDialog()" style="margin-right: 10px;"
-    color="primary">
+  </button><br>
+  <button mat-raised-button (click)="openUserLoginDialog()" class="loginBtn" color="primary">
     Login
   </button>
 </div>
