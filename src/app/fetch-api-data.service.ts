@@ -319,7 +319,7 @@ export class AddMovieService {
   }
 
   public addMovie(movieId: any): Observable<any> {
-    const username = localStorage.getItem('username');
+    const username = localStorage.getItem('user');
     const token = localStorage.getItem('token');
     return this.http.post(apiUrl + `users/${username}/movies/${movieId}`, {
       headers: new HttpHeaders({
@@ -359,7 +359,7 @@ export class EditUserService {
   }
 
   public editUser(userDetails: any): Observable<any> {
-    const username = localStorage.getItem('username');
+    const username = localStorage.getItem('user');
     const token = localStorage.getItem('token');
     return this.http.put(apiUrl + `users/${username}`, userDetails, {
       headers: new HttpHeaders({
@@ -397,7 +397,7 @@ export class DeleteUserService {
   }
 
   public deleteUser(): Observable<any> {
-    const username = localStorage.getItem('username');
+    const username = localStorage.getItem('user');
     const token = localStorage.getItem('token');
     return this.http.delete(apiUrl + `users/${username}`, {
       headers: new HttpHeaders({
@@ -437,7 +437,7 @@ export class DeleteMovieService {
   }
 
   public deleteMovie(movieId: any): Observable<any> {
-    const username = localStorage.getItem('username');
+    const username = localStorage.getItem('user');
     const token = localStorage.getItem('token');
     return this.http.delete(apiUrl + `users/${username}/movies/${movieId}`, {
       headers: new HttpHeaders({
