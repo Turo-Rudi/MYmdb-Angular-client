@@ -1,6 +1,6 @@
 # MYmdbAngularClient
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.2.
+It is the client-side for a web application called MYmdb using Angular and Angular Materials. It is based on its existing server-side code (MYmdb-server, REST API and database)
 
 ## Development server
 
