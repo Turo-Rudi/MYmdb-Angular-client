@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 //closes the dialog on success
 import { MatDialogRef } from '@angular/material/dialog';
 //brings in the API calls
-import { UserLoginService } from '../fetch-api-data.service';
+import { UserRegistrationService } from '../fetch-api-data.service';
 //displays notifications to the user
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ export class UserLoginFormComponent implements OnInit {
   @Input() userCredentials = { Username: '', Password: '' };
 
   constructor(
-    public fetchApiData: UserLoginService,
+    public fetchApiData: UserRegistrationService,
     public dialogRef: MatDialogRef<UserLoginFormComponent>,
     public snackBar: MatSnackBar,
     public router: Router) { }

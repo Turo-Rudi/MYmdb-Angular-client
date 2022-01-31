@@ -1,14 +1,11 @@
-import { CloseScrollStrategy } from '@angular/cdk/overlay';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { GetAllMoviesService } from '../fetch-api-data.service';
+import { UserRegistrationService } from '../fetch-api-data.service';
 import { DescriptionComponent } from '../description/description.component';
 import { DirectorComponent } from '../director/director.component';
 import { GenreComponent } from '../genre/genre.component';
-
-import { AddMovieService } from '../fetch-api-data.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-movie-card',
@@ -17,16 +14,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class MovieCardComponent implements OnInit {
   movies: any[] = [];
+  FavoriteMovies: any[] = [];
+  user: any[] = [];
 
   constructor(
-    public fetchApiData: GetAllMoviesService,
-    public fetchApiDataAddFavMov: AddMovieService,
+    public fetchApiData: UserRegistrationService,
     public dialog: MatDialog,
     public snackBar: MatSnackBar,
   ) { }
 
   ngOnInit(): void {
     this.getMovies();
+    this.getFavoriteMovies();
   }
 
   getMovies(): void {
@@ -34,6 +33,14 @@ export class MovieCardComponent implements OnInit {
       this.movies = resp;
       console.log(this.movies);
       return this.movies;
+    });
+  }
+
+  getFavoriteMovies(): void {
+    const username = localStorage.getItem('user');
+    this.fetchApiData.getUser(username).subscribe((resp: any) => {
+      this.FavoriteMovies = resp.FavoriteMovies;
+      console.log(this.FavoriteMovies);
     });
   }
 
@@ -58,13 +65,38 @@ export class MovieCardComponent implements OnInit {
     });
   }
 
-  addFavorite(_id: string, title: string): void {
-    this.fetchApiDataAddFavMov.addMovie(_id).subscribe((resp: any) => {
-      let favmovies = resp.FavoriteMovies;
-      localStorage.setItem('FavoriteMovies', favmovies);
+  addFavoriteMovie(_id: string, title: string): void {
+    this.fetchApiData.addFavoriteMovie(_id).subscribe((resp: any) => {
+      console.log(resp);
+      // let favmovies = resp.FavoriteMovies;
+      // localStorage.setItem('FavoriteMovies', favmovies);
       this.snackBar.open(`${title} has been added to your favorites!`, 'OK', {
         duration: 2000,
       });
+      this.ngOnInit();
     });
+    return this.getFavoriteMovies();
   }
+
+  removeFavoriteMovie(_id: string, title: string): void {
+    this.fetchApiData.deleteMovie(_id).subscribe((resp: any) => {
+      console.log(resp);
+      this.snackBar.open(`${title} has been removed from your favorites!`, 'OK', {
+        duration: 2000,
+      });
+      this.ngOnInit();
+    });
+    return this.getFavoriteMovies();
+  }
+
+  isFavorite(_id: string): boolean {
+    return this.FavoriteMovies.some((movie) => movie._id === _id);
+  }
+
+  toggleFavorite(movie: any): void {
+    this.isFavorite(movie._id)
+      ? this.removeFavoriteMovie(movie._id, movie.Title)
+      : this.addFavoriteMovie(movie._id, movie.Title);
+  }
+
 }

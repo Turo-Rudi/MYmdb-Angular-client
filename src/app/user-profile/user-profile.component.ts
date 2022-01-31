@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { GetAllMoviesService } from '../fetch-api-data.service';
-import { DeleteUserService } from '../fetch-api-data.service';
-import { DeleteMovieService } from '../fetch-api-data.service';
-import { UserUpdateComponent } from '../user-update/user-update.component';
-import { MovieCardComponent } from '../movie-card/movie-card.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+
+import { UserRegistrationService, User } from '../fetch-api-data.service';
+import { UserUpdateComponent } from '../user-update/user-update.component';
+import { MovieCardComponent } from '../movie-card/movie-card.component';
+
 
 @Component({
   selector: 'app-user-profile',
@@ -15,15 +15,14 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class UserProfileComponent implements OnInit {
   user: any = {};
+  Username = localStorage.getItem('user');
   movies: any = [];
-  favorite: any = [];
+  FavMovies: any = [];
   Email: any = [];
   Birthday: any = [];
 
   constructor(
-    public fetchApiData: GetAllMoviesService,
-    public fetchApiDataDeleteMovie: DeleteMovieService,
-    public fetchApiDataDeleteUser: DeleteUserService,
+    public fetchApiData: UserRegistrationService,
     public router: Router,
     public snackBar: MatSnackBar,
     public dialog: MatDialog
@@ -31,43 +30,43 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUser();
-  }
-
-  getUser(): void {
-    let FavoriteMovies = localStorage.getItem('FavoriteMovies');
-    let Username = localStorage.getItem('user');
-    let Email = localStorage.getItem('Email');
-    let Birthday = localStorage.getItem('Birthday');
-    this.user = {
-      "FavoriteMovies": FavoriteMovies,
-      "Username": Username,
-      "Email": Email,
-      "Birthday": Birthday,
-    }
     this.getMovies();
   }
 
-  getMovies(): void {
-    this.fetchApiData.getAllMovies().subscribe((resp: any) => {
-      this.movies = resp;
-      this.filterFavorites();
+  getUser(): void {
+    const username = localStorage.getItem('user');
+    this.fetchApiData.getUser(username).subscribe((res: any) => {
+      this.user = res;
+      this.getMovies();
     });
   }
 
-  filterFavorites(): void {
-    this.movies.forEach((movie: any) => {
-      if (this.user.FavoriteMovies.includes(movie._id)) {
-        this.favorite.push(movie);
-      }
+  // getUser(): void {
+  //   let FavoriteMovies = localStorage.getItem('FavoriteMovies');
+  //   let Username = localStorage.getItem('user');
+  //   let Email = localStorage.getItem('Email');
+  //   let Birthday = localStorage.getItem('Birthday');
+  //   this.fetchApiData.getUser(user).subscribe((res: any) => {
+  //     this.user = res;
+  //     this.getMovies();
+  //     console.log(res);
+  //   });
+  // }
+
+  getMovies(): void {
+    const username = localStorage.getItem('user');
+    this.fetchApiData.getUser(username).subscribe((resp: any) => {
+      this.FavMovies = resp.FavoriteMovies;
+      console.log(this.FavMovies);
+      return this.FavMovies;
     });
-    return this.favorite;
   }
 
   removeFavorites(_id: string, title: string): void {
-    this.fetchApiDataDeleteMovie.deleteMovie(_id).subscribe((resp) => {
+    this.fetchApiData.deleteMovie(_id).subscribe((resp: any) => {
       console.log(resp);
-      let favmovies = resp.FavoriteMovies;
-      localStorage.setItem('FavoriteMovies', favmovies);
+      // let favmovies = resp.FavoriteMovies;
+      // localStorage.setItem('FavoriteMovies', favmovies);
       this.snackBar.open(
         `${title} has been removed from your favorites!`,
         `OK`, {
@@ -86,7 +85,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   deleteUser(): void {
-    this.fetchApiDataDeleteUser.deleteUser().subscribe(() => {
+    this.fetchApiData.deleteUser().subscribe(() => {
       localStorage.clear();
       this.router.navigate(['welcome']);
       this.snackBar.open('Your profile has been deleted', 'OK', {

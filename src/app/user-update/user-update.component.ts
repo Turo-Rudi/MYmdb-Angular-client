@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EditUserService } from '../fetch-api-data.service';
+import { UserRegistrationService } from '../fetch-api-data.service';
 
 @Component({
   selector: 'app-user-update',
@@ -9,20 +9,35 @@ import { EditUserService } from '../fetch-api-data.service';
   styleUrls: ['./user-update.component.scss']
 })
 export class UserUpdateComponent implements OnInit {
+  Username = localStorage.getItem('user');
+  user: any = {};
 
-  @Input() userData = { Username: '', Password: '', Email: '', Birthday: '' };
+  @Input() userData = {
+    Username: this.user.Username,
+    Password: this.user.Password,
+    Email: this.user.Email,
+    Birthday: this.user.Birthday
+  };
 
   constructor(
-    public fetchUserData: EditUserService,
+    public fetchApiData: UserRegistrationService,
     public dialogRef: MatDialogRef<UserUpdateComponent>,
     public snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
+    this.getUser();
+  }
+
+  getUser(): void {
+    const username = localStorage.getItem('user');
+    this.fetchApiData.getUser(username).subscribe((resp: any) => {
+      this.user = resp;
+    });
   }
 
   editUser(): void {
-    this.fetchUserData.editUser(this.userData).subscribe((resp) => {
+    this.fetchApiData.editUser(this.userData).subscribe((resp) => {
       this.dialogRef.close();
       localStorage.setItem('user', resp.Username);
       localStorage.setItem('Email', resp.Email);
