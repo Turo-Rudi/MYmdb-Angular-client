@@ -1,8 +1,8 @@
 <mat-toolbar class="mat-elevation-z6" fxLayout="row">
-  <a mat-button color="basic" font text-transform="uppercase" routerLink="/movies">MYmdb</a>
+  <a mat-button color="basic" font text-transform="uppercase" routerLink="/movies">All movies</a>
   <div class="spacer"></div>
   <div fxShow="true" fxHide.lt-md="true">
     <a mat-stroked-button color="basic" routerLink="/profile">My Profile</a>
-    <a mat-raised-button color="warn" routerLink="/welcome">Logout</a>
+    <a mat-raised-button color="warn" (click)="userLogout()">Logout</a>
   </div>
 </mat-toolbar>
