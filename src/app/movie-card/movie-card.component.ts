@@ -65,12 +65,12 @@ export class MovieCardComponent implements OnInit {
     });
   }
 
-  addFavoriteMovie(_id: string, title: string): void {
+  addFavoriteMovie(_id: string): void {
     this.fetchApiData.addFavoriteMovie(_id).subscribe((resp: any) => {
       console.log(resp);
       // let favmovies = resp.FavoriteMovies;
       // localStorage.setItem('FavoriteMovies', favmovies);
-      this.snackBar.open(`${title} has been added to your favorites!`, 'OK', {
+      this.snackBar.open('The movie has been added to your favorites!', 'OK', {
         duration: 2000,
       });
       this.ngOnInit();
@@ -78,10 +78,10 @@ export class MovieCardComponent implements OnInit {
     return this.getFavoriteMovies();
   }
 
-  removeFavoriteMovie(_id: string, title: string): void {
+  removeFavoriteMovie(_id: string): void {
     this.fetchApiData.deleteMovie(_id).subscribe((resp: any) => {
       console.log(resp);
-      this.snackBar.open(`${title} has been removed from your favorites!`, 'OK', {
+      this.snackBar.open('The movie has been removed from your favorites!', 'OK', {
         duration: 2000,
       });
       this.ngOnInit();
@@ -95,8 +95,8 @@ export class MovieCardComponent implements OnInit {
 
   toggleFavorite(movie: any): void {
     this.isFavorite(movie._id)
-      ? this.removeFavoriteMovie(movie._id, movie.Title)
-      : this.addFavoriteMovie(movie._id, movie.Title);
+      ? this.removeFavoriteMovie(movie._id)
+      : this.addFavoriteMovie(movie._id);
   }
 
 }

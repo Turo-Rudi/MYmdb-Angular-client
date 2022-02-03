@@ -147,7 +147,7 @@ export class UserRegistrationService {
   public addFavoriteMovie(movieId: any): Observable<any> {
     const username = localStorage.getItem('user');
     const token = localStorage.getItem('token');
-    return this.http.put(apiUrl + `users/${username}/movies/${movieId}`, {
+    return this.http.post(apiUrl + `users/${username}/Movies/${movieId}`, {
       headers: new HttpHeaders({
         Authorization: 'Bearer ' + token,
       })
@@ -196,7 +196,7 @@ export class UserRegistrationService {
   public deleteMovie(movieId: any): Observable<any> {
     const username = localStorage.getItem('user');
     const token = localStorage.getItem('token');
-    return this.http.delete(apiUrl + `users/${username}/movies/${movieId}`, {
+    return this.http.delete(apiUrl + `users/${username}/Movies/${movieId}`, {
       headers: new HttpHeaders({
         Authorization: 'Bearer ' + token,
       })
