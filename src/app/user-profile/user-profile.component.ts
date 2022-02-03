@@ -30,7 +30,7 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUser();
-    this.getMovies();
+    this.getMoviees();
   }
 
   getUser(): void {
@@ -53,18 +53,36 @@ export class UserProfileComponent implements OnInit {
   //   });
   // }
 
-  getMovies(): void {
-    const username = localStorage.getItem('user');
-    this.fetchApiData.getUser(username).subscribe((resp: any) => {
-      this.FavMovies = resp.FavoriteMovies;
-      console.log(this.FavMovies);
-      return this.FavMovies;
+  getMoviees(): void {
+    this.fetchApiData.getAllMovies().subscribe((res: any) => {
+      console.log(this.movies, "movies");
+      this.movies = res;
+      this.getMovies();
     });
+  }
+
+  getMovies(): void {
+    console.log(this.movies, "movies 1");
+    this.movies.forEach((movie: any) => {
+      console.log(this.user, "user");
+      if (this.user.FavoriteMovies.includes(movie._id)) {
+        this.FavMovies.push(movie);
+      }
+    });
+    console.log(this.FavMovies, "fav");
+    return this.FavMovies;
+
+    // const username = localStorage.getItem('user');
+    // this.fetchApiData.getUser(username).subscribe((resp: any) => {
+    //   this.FavMovies = resp.FavoriteMovies;
+    //   console.log(this.FavMovies);
+    //   return this.FavMovies;
+    // });
   }
 
   removeFavorites(_id: string, title: string): void {
     this.fetchApiData.deleteMovie(_id).subscribe((resp: any) => {
-      console.log(resp);
+      // console.log(resp);
       // let favmovies = resp.FavoriteMovies;
       // localStorage.setItem('FavoriteMovies', favmovies);
       this.snackBar.open(

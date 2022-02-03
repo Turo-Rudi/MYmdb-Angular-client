@@ -147,7 +147,7 @@ export class UserRegistrationService {
   public addFavoriteMovie(movieId: any): Observable<any> {
     const username = localStorage.getItem('user');
     const token = localStorage.getItem('token');
-    return this.http.post(apiUrl + `users/${username}/Movies/${movieId}`, {
+    return this.http.post(apiUrl + `users/${username}/Movies/${movieId}`, movieId, {
       headers: new HttpHeaders({
         Authorization: 'Bearer ' + token,
       })
